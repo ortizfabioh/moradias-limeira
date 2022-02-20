@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}    
+    <h2>{{ object.title }}</h2>
+    <p class="date">
+        Publicado por <b>{{ object.author }}</b> em {{ object.datePost }}
+    </p>
+    <p>{{ object.description }}</p>
+    {% if object.image %}
+        <img src='{{ object.image.url }}' class="'img-fluid">
+    {% endif %}
+{% endblock content %}
