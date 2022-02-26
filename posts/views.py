@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView
 from django.http import Http404
 from .models import Post
 
-# Views somente de posts de repúblicas
+# Views de posts de repúblicas
 class RepuPostListView(ListView):
     template_name = "posts/list.html"
 
@@ -16,9 +16,9 @@ class RepuPostDetailView(DetailView):
 
 
 
-# Views comuns
+# Views de posts que não são de repúblicas
 class PostListView(ListView):
-    queryset = Post.objects.all()
+    queryset = Post.objects.commonPost()
     template_name = 'posts/list.html'
 
 class PostDetailView(DetailView):

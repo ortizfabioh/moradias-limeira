@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.db import models
 from django.contrib.auth.models import User
 from .utils import unique_slug_generator
@@ -8,34 +9,42 @@ class PostQuerySet(models.query.QuerySet):
     def fbPost(self):
         return self.filter(fbPost = True)
 
-    # Retornar só posts de Repúblicas
+    # Retornar posts de Repúblicas
     def repuPost(self):
         return self.filter(repuPost = True)
     
-    # Retornar só posts q não são de Repúblicas
-    def post(self):
+    # Retornar posts q não são de Repúblicas
+    def commonPost(self):
         return self.filter(repuPost = False)
+
+    # Retornar posts q encaixam na busca
+    def search(self, query):
+        lookups = (Q(title__contains = query) | Q(description__contains = query))
+        return self.filter(lookups).distinct()
 
 class PostManager(models.Manager):
     def get_queryset(self):
         return PostQuerySet(self.model, using = self._db)
-    
-    def all(self):
-        return self.get_queryset().post()
 
-    def repuPost(self): # Criando uma query personalizada para chamar posts repu (Q são de repúblicas)
+    def repuPost(self):
         return self.get_queryset().repuPost()
     
+    def commonPost(self):
+        return self.get_queryset().commonPost()
+
     def get_by_id(self, id):
         qs = self.get_queryset().filter(id = id)
         if qs.count() == 1:
             return qs.first()
         return None
+    
+    def search(self, query):
+        return self.get_queryset().search(query)
 
 class Post(models.Model):
     title       = models.CharField(max_length=120)
     slug        = models.SlugField(blank=True, max_length=120, unique=True)
-    author      = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    author      = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
     datePost    = models.DateTimeField(auto_now_add=True)  # auto_now_add=True salva a hora de criação e deixa imutável
     image       = models.ImageField(upload_to='posts/', null=True, blank=True)

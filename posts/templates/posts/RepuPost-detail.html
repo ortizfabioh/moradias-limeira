@@ -5,7 +5,7 @@
     <p class="date">
         Publicado por <b>{{ object.author }}</b> em {{ object.datePost }}
     </p>
-    <p>{{ object.description }}</p>
+    <p>{{ object.description|linebreaks }}</p>
     {% if object.image %}
         <img src='{{ object.image.url }}' class="'img-fluid">
     {% endif %}

@@ -3,8 +3,8 @@ body {
     font-size: 1.5rem;
     color: #111111;
 }
-.container {
-    margin: 2% 20% 20%;
+.row {
+    margin: 2% 0;
 }
 
 h1 {
