@@ -1,6 +1,5 @@
 from django.db.models import Q
 from django.db import models
-from django.contrib.auth.models import User
 from .utils import unique_slug_generator
 from django.db.models.signals import pre_save
 from django.urls import reverse
@@ -19,7 +18,11 @@ class PostQuerySet(models.query.QuerySet):
 
     # Retornar posts q encaixam na busca
     def search(self, query):
-        lookups = (Q(title__contains = query) | Q(description__contains = query))
+        lookups = (
+            Q(title__contains = query) | 
+            Q(description__contains = query) | 
+            Q(author__contains = query) |
+            Q(tag__title__contains = query))
         return self.filter(lookups).distinct()
 
 class PostManager(models.Manager):
@@ -44,7 +47,7 @@ class PostManager(models.Manager):
 class Post(models.Model):
     title       = models.CharField(max_length=120)
     slug        = models.SlugField(blank=True, max_length=120, unique=True)
-    author      = models.ForeignKey(User, on_delete=models.CASCADE)
+    author      = models.CharField(max_length=120)
     description = models.TextField()
     datePost    = models.DateTimeField(auto_now_add=True)  # auto_now_add=True salva a hora de criação e deixa imutável
     image       = models.ImageField(upload_to='posts/', null=True, blank=True)

@@ -3,5 +3,5 @@
     <p class="date">
         Publicado por <b>{{ obj.author }}</b> em {{ obj.datePost }}
     </p>
-    {{ obj.description|linebreaks|truncatewords:30 }}<a href="{% url 'posts:detail' slug=obj.slug %}">Ver mais</a>
+    {{ obj.description|linebreaks|truncatewords:30 }}{% if obj.description|length > 30 %}<a href="{% url 'posts:detail' slug=obj.slug %}">Ver mais</a>{% endif %}
 </article>

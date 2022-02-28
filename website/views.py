@@ -1,6 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import NewPostForm
+from posts.views import PostListView, PostDetailView
 
 def home_page(request):
     context = {
@@ -17,17 +18,16 @@ def about_page(request):
     return render(request, "about/view.html", context)
 
 def form_page(request):
-    post_form = NewPostForm(request.POST or None)
-    context = {
-        "title": "Página de formulário",
-        "content": "Bem-vindo a página de formulário",
-        "form": post_form
-    }
-    if post_form.is_valid():
-        print(post_form.cleaned_data)
-    #if request.method == "POST":
-        #print(request.POST)
-        #print(request.POST.get('identification'))
-        #print(request.POST.get('contact'))
-        #print(request.POST.get('post'))
-    return render(request, "form/view.html", context)
+    if request.method == 'POST':
+        form = NewPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            print(form.cleaned_data)
+            title = form.cleaned_data["title"]
+            author = form.cleaned_data["author"]
+            description = form.cleaned_data["description"]
+            form.save()
+            return HttpResponseRedirect("/posts/")
+    else:
+        form = NewPostForm()
+
+    return render(request, "form/view.html", {"form": form})

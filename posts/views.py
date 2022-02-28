@@ -1,4 +1,3 @@
-# from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import Http404
 from .models import Post
@@ -11,7 +10,7 @@ class RepuPostListView(ListView):
         return Post.objects.repuPost()
 
 class RepuPostDetailView(DetailView):
-    queryset = Post.objects.all().repuPost()
+    queryset = Post.objects.repuPost()
     template_name = "posts/RepuPost-detail.html"
 
 
