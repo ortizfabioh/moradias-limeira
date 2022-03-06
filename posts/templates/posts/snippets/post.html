@@ -1,7 +1,7 @@
 <article>
-    <a href="{{ obj.get_absolute_url }}"><h2>{{ obj.title }}</h2></a>
+    <h2>Publicado por <a href="{{ obj.get_absolute_url }}"><u>{{ obj.author }}</u></a></h2>
     <p class="date">
-        Publicado por <b>{{ obj.author }}</b> em {{ obj.datePost }}
+        Criada em {{ obj.datePost }}
     </p>
     {{ obj.description|linebreaks|truncatewords:30 }}{% if obj.description|length > 30 %}<a href="{% url 'posts:detail' slug=obj.slug %}">Ver mais</a>{% endif %}
 </article>

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}    
-    <h2>{{ object.title|title }}</h2>
+    <h2>Publicado por {{ object.author }}</h2>
     <p class="date">
-        Publicado por <b>{{ object.author }}</b> em {{ object.datePost }}
+        Criada em {{ object.datePost }}
     </p>
     <p>{{ object.description|linebreaks }}</p>
     {% if object.image %}

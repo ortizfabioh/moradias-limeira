@@ -18,12 +18,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from .views import about_page, form_page
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path('about/', about_page, name='about'),
     path('form/', form_page, name='form'),
-    path('bootstrap/', TemplateView.as_view(template_name='bootstrap/example.html')),
     path('posts/', include("posts.urls", namespace='posts')),
     path('search/', include("search.urls", namespace='search')),
     path('admin/', admin.site.urls),

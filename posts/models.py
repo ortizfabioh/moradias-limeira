@@ -19,7 +19,6 @@ class PostQuerySet(models.query.QuerySet):
     # Retornar posts q encaixam na busca
     def search(self, query):
         lookups = (
-            Q(title__contains = query) | 
             Q(description__contains = query) | 
             Q(author__contains = query) |
             Q(tag__title__contains = query))
@@ -45,7 +44,6 @@ class PostManager(models.Manager):
         return self.get_queryset().search(query)
 
 class Post(models.Model):
-    title       = models.CharField(max_length=120)
     slug        = models.SlugField(blank=True, max_length=120, unique=True)
     author      = models.CharField(max_length=120)
     description = models.TextField()
@@ -60,11 +58,8 @@ class Post(models.Model):
         ordering = ("-datePost",)
 
     def get_absolute_url(self):
-        return reverse("posts:detail", kwargs={"slug": self.slug})  # dinâmico
-        return "/posts/{slug}/".format(slug = self.slug)  # hard code
+        return reverse("posts:detail", kwargs={"slug": self.slug})
 
-    def __str__(self):
-        return self.title
 
 def post_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:

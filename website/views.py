@@ -22,7 +22,6 @@ def form_page(request):
         form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
             print(form.cleaned_data)
-            title = form.cleaned_data["title"]
             author = form.cleaned_data["author"]
             description = form.cleaned_data["description"]
             form.save()
