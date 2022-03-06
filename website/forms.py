@@ -1,8 +1,7 @@
-from attr import attr
-from django.forms import ImageField, ModelForm
+from django import forms
 from posts.models import Post
 
-class NewPostForm(ModelForm):
+class NewPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
@@ -12,5 +11,8 @@ class NewPostForm(ModelForm):
             'description': 'Sua postagem ',
             'image': 'Tem alguma foto do local?',
             'repuPost': 'A vaga é em República?'
+        }
+        widgets = {
+            'image': forms.ClearableFileInput(attrs={'multiple': True}),
         }
     # TODO permitir o upload de várias imagens

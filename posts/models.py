@@ -23,6 +23,7 @@ class PostQuerySet(models.query.QuerySet):
             Q(author__contains = query) |
             Q(tag__title__contains = query))
         return self.filter(lookups).distinct()
+    
 
 class PostManager(models.Manager):
     def get_queryset(self):
@@ -48,7 +49,7 @@ class Post(models.Model):
     author      = models.CharField(max_length=120)
     description = models.TextField()
     datePost    = models.DateTimeField(auto_now_add=True)  # auto_now_add=True salva a hora de criação e deixa imutável
-    image       = models.ImageField(upload_to='posts/', null=True, blank=True)
+    image       = models.ImageField(upload_to='posts/', blank=True, null=True)
     repuPost    = models.BooleanField(default = False)
     fbPost      = models.BooleanField(default = False)
 
@@ -59,6 +60,11 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse("posts:detail", kwargs={"slug": self.slug})
+
+
+class PostImages(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    images = models.ImageField(upload_to='posts/')
 
 
 def post_pre_save_receiver(sender, instance, *args, **kwargs):
