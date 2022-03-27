@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # INSTALLED
     'crispy_forms',
     'social_django',
+    'sslserver',
 
     # CUSTOM APPS
     'posts',
@@ -71,6 +72,8 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
+SOCIAL_AUTH_FACEBOOK_KEY = '1656892544668130'
+SOCIAL_AUTH_FACEBOOK_SECRET = '7815e27c3c3a172dc33722fbb49fb0f6'
 
 ROOT_URLCONF = 'website.urls'
 
