@@ -5,10 +5,17 @@
     <p class="date">
         Criada em {{ object.datePost }}
     </p>
-    <p>{{ object.description|linebreaks }}</p>
     {% for img in object.postimages_set.all %}
         {% if img.images %}
-        <img src='{{ img.images.url }}' class="'img-fluid" width="360" height="360">
+            <img src='{{ img.images.url }}' class="'img-fluid" width="360" height="360">
         {% endif %}
     {% endfor %}
+    <p>{{ object.description|linebreaks }}</p>
+    
+    <h4>Tags:</h4>
+    <p>
+        {% for tag in object.tag.all %}
+            {{ tag.title }} | 
+        {% endfor %}
+    </p>
 {% endblock content %}

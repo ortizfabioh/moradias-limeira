@@ -1,6 +1,7 @@
 from django import forms
 from posts.models import Post
 
+# Definição dos campos do formulário de posts
 class NewPostForm(forms.ModelForm):
 
     class Meta:

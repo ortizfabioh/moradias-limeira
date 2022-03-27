@@ -9,7 +9,6 @@ class SearchPostView(ListView):
         context = super().get_context_data(*args, **kwargs)
         query = self.request.GET.get('q')
         context['query'] = query
-        #SearchQuery.objects.create(query=query)
         return context
 
     def get_queryset(self, *args, **kargs):

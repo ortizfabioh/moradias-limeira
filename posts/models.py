@@ -3,18 +3,12 @@ from django.db import models
 from .utils import unique_slug_generator
 from django.db.models.signals import pre_save
 from django.urls import reverse
+from tags.models import Tag
 
+# Definição do funcionamento das queries customizadas
 class PostQuerySet(models.query.QuerySet):
     def fbPost(self):
         return self.filter(fbPost = True)
-
-    # Retornar posts de Repúblicas
-    def repuPost(self):
-        return self.filter(repuPost = True)
-    
-    # Retornar posts q não são de Repúblicas
-    def commonPost(self):
-        return self.filter(repuPost = False)
 
     # Retornar posts q encaixam na busca
     def search(self, query):
@@ -23,17 +17,13 @@ class PostQuerySet(models.query.QuerySet):
             Q(author__contains = query) |
             Q(tag__title__contains = query))
         return self.filter(lookups).distinct()
-    
 
+
+
+# "Formalização" das queries utilizáveis
 class PostManager(models.Manager):
     def get_queryset(self):
         return PostQuerySet(self.model, using = self._db)
-
-    def repuPost(self):
-        return self.get_queryset().repuPost()
-    
-    def commonPost(self):
-        return self.get_queryset().commonPost()
 
     def get_by_id(self, id):
         qs = self.get_queryset().filter(id = id)
@@ -44,14 +34,16 @@ class PostManager(models.Manager):
     def search(self, query):
         return self.get_queryset().search(query)
 
+
 class Post(models.Model):
     slug        = models.SlugField(blank=True, max_length=120, unique=True)
     author      = models.CharField(max_length=120)
     description = models.TextField()
-    datePost    = models.DateTimeField(auto_now_add=True)  # auto_now_add=True salva a hora de criação e deixa imutável
+    datePost    = models.DateTimeField(auto_now_add=True)
     image       = models.ImageField(upload_to='posts/', blank=True, null=True)
     repuPost    = models.BooleanField(default = False)
     fbPost      = models.BooleanField(default = False)
+    tag         = models.ManyToManyField(Tag)
 
     objects = PostManager()
 
@@ -62,8 +54,9 @@ class Post(models.Model):
         return reverse("posts:detail", kwargs={"slug": self.slug})
 
 
+# Modelo para poder upar várias imagens e linkar ao model do Post
 class PostImages(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post   = models.ForeignKey(Post, on_delete=models.CASCADE)
     images = models.ImageField(upload_to='posts/')
 
 

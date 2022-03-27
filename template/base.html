@@ -10,6 +10,8 @@
         {% block base_head %}{% endblock base_head %}
     </head>
     <body>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v13.0&appId=3099211323655512&autoLogAppEvents=1" nonce="WnqORnCk"></script>
         {% include 'base/navbar.html' with nome_da_marca='Moradias' %}
         <div class="row justify-content-md-center">
             <div class="col-sm-10">

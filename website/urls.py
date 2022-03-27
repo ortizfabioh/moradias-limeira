@@ -17,14 +17,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from .views import about_page, form_page
+from .views import form_page
 
 urlpatterns = [
-    path('about/', about_page, name='about'),
     path('form/', form_page, name='form'),
     path('posts/', include("posts.urls", namespace='posts')),
     path('search/', include("search.urls", namespace='search')),
     path('admin/', admin.site.urls),
+    path('social-auth/', include('social_django.urls', namespace='social-auth')),
 ]
 
 if settings.DEBUG:

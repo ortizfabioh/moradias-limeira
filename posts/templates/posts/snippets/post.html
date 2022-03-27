@@ -3,5 +3,5 @@
     <p class="date">
         Criada em {{ obj.datePost }}
     </p>
-    {{ obj.description|linebreaks|truncatewords:30 }}{% if obj.description|length > 30 %}<a href="{% url 'posts:detail' slug=obj.slug %}">Ver mais</a>{% endif %}
+    {{ obj.description|linebreaks|truncatewords:30 }}{% if obj.description|length > 30 %}<a href="{{ obj.get_absolute_url }}">Ver mais</a>{% endif %}
 </article>
